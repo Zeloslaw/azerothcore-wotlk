@@ -190,6 +190,8 @@ public:
             { "guid",           HandleNpcGuidCommand,              SEC_GAMEMASTER, Console::No },
             { "near",           HandleNpcNearCommand,              SEC_GAMEMASTER, Console::No },
             { "move",           HandleNpcMoveCommand,              SEC_GAMEMASTER, Console::No },
+            { "movetoplayer",   HandleNpcMoveToPlayerCommand,      SEC_GAMEMASTER, Console::No },
+            { "movetopoint",    HandleNpcMoveToPointCommand,       SEC_GAMEMASTER, Console::Yes },
             { "playemote",      HandleNpcPlayEmoteCommand,         SEC_GAMEMASTER, Console::No },
             { "say",            HandleNpcSayCommand,               SEC_GAMEMASTER, Console::No },
             { "textemote",      HandleNpcTextEmoteCommand,         SEC_GAMEMASTER, Console::No },
