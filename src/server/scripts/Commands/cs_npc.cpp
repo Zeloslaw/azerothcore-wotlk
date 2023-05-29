@@ -33,6 +33,7 @@ EndScriptData */
 #include "ScriptMgr.h"
 #include "TargetedMovementGenerator.h"                      // for HandleNpcUnFollowCommand
 #include "Transport.h"
+#include "ObjectAccessor.h"
 #include <string>
 
 using namespace Acore::ChatCommands;
@@ -573,6 +574,35 @@ public:
         creature->GetMotionMaster()->MoveFollow(player, PET_FOLLOW_DIST, creature->GetFollowAngle());
 
         handler->PSendSysMessage(LANG_CREATURE_FOLLOW_YOU_NOW, creature->GetName().c_str());
+        return true;
+    }
+
+    static bool HandleNpcMoveToPlayerCommand(ChatHandler* handler)
+    {
+        Player* player = handler->GetSession()->GetPlayer();
+        Creature* creature = handler->getSelectedCreature();
+
+        if (!creature)
+        {
+            handler->PSendSysMessage(LANG_SELECT_CREATURE);
+            handler->SetSentErrorMessage(true);
+            return false;
+        }
+
+        creature->GetMotionMaster()->MovePoint(0, player->GetPositionX(), player->GetPositionY(), player->GetPositionZ());
+
+        return true;
+    }
+
+    static bool HandleNpcMoveToPointCommand(ChatHandler* handler, uint32 mapId, CreatureSpawnId lowGuid, float x, float y, float z)
+    {
+        Creature* wpCreature = ObjectAccessor::GetSpawnedCreatureByDBGUID(uint32(0), uint64(lowGuid));
+
+        if (!wpCreature) {
+            LOG_INFO("server.worldserver", "HandleNpcMoveToPointCommand wpCreature isNull");
+            return true;
+        }
+        wpCreature->GetMotionMaster()->MovePoint(0, float(x), float(y), float(z));
         return true;
     }
 
